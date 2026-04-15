@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의) 제안서 - 노페일디자인</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"/>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --main:#AE20D2;
+  --sub1:#E7A5F7;
+  --sub2:#E8E8E8;
+  --bg:#000000;
+  --fg:#FFFFFF;
+  --muted:rgba(255,255,255,.55);
+  --card:rgba(255,255,255,.04);
+  --border:rgba(255,255,255,.08);
+  --container:1100px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;
+  background:var(--bg);color:var(--fg);line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── 공통 ── */
+.container{max-width:var(--container);margin:0 auto;padding:0 24px}
+.section{padding:120px 0}
+.section + .section{border-top:1px solid var(--border)}
+.eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--main);font-weight:600;margin-bottom:12px;text-align:center}
+.section-title{font-size:38px;font-weight:800;letter-spacing:-.5px;line-height:1.2;margin-bottom:16px;text-align:center}
+.section-sub{font-size:16px;color:var(--muted);max-width:600px;margin-bottom:48px;text-align:center;margin-left:auto;margin-right:auto}
+
+/* ── 블러인 + 슬라이드업 애니메이션 ── */
+.anim{opacity:0;transform:translateY(40px);filter:blur(10px);transition:opacity 1.3s ease,transform 1.3s ease,filter 1.3s ease}
+.anim.visible{opacity:1;transform:translateY(0);filter:blur(0)}
+.anim-d1{transition-delay:0s}
+.anim-d2{transition-delay:.15s}
+.anim-d3{transition-delay:.3s}
+.anim-d4{transition-delay:.45s}
+.anim-d5{transition-delay:.6s}
+
+/* ── 히어로 ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;position:relative;overflow:hidden;
+  background:var(--bg);
+}
+.hero-tag{
+  display:inline-block;font-size:12px;padding:6px 20px;
+  border:1px solid rgba(174,32,210,.4);border-radius:999px;
+  color:var(--sub1);font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero h1{font-size:52px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:var(--main)}
+.hero .muted{color:var(--muted);font-size:15px}
+.hero .cta{
+  margin-top:36px;display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:12px;font-weight:700;font-size:15px;
+  background:var(--main);color:#fff;transition:all .2s;
+}
+.hero .cta:hover{opacity:.9;transform:translateY(-2px)}
+
+/* ── CEO ── */
+.ceo-grid{display:grid;grid-template-columns:320px 1fr;gap:0;align-items:stretch;min-height:480px}
+.ceo-photo{
+  position:relative;
+  background:url("https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/fe2eb548af41e.png") center top/contain no-repeat;
+  background-color:#000;
+  border-radius:16px 0 0 16px;
+}
+.ceo-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 83.61%, #000 100%);
+  border-radius:16px 0 0 16px;
+}
+.ceo-text{padding:48px 48px 48px 32px;display:flex;flex-direction:column;justify-content:center}
+.ceo-text p{color:var(--sub2);font-size:16px;margin-bottom:14px}
+.ceo-text strong{color:#fff}
+.ceo-credit{margin-top:20px;font-size:18px;font-weight:600;color:#fff;border-top:1px solid var(--border);padding-top:16px}
+
+/* ── 카드 그리드 (개선방안/문제점) ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:32px;position:relative;overflow:hidden;transition:all .25s;
+}
+
+.card:hover{border-color:rgba(174,32,210,.3);transform:translateY(-4px)}
+.card .num{font-size:42px;font-weight:900;color:rgba(174,32,210,.15);line-height:1;margin-bottom:8px}
+.card h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.card .card-sub{font-size:13px;color:var(--sub1);margin-bottom:14px}
+.card p{font-size:14px;color:var(--sub2);line-height:1.7}
+.card ul{list-style:none;margin-top:12px}
+.card li{position:relative;padding-left:20px;margin-bottom:8px;font-size:14px;color:var(--sub2);line-height:1.6}
+.card li::before{content:'→';position:absolute;left:0;color:var(--main);font-size:13px}
+
+/* ── 사이트맵 (GNB 프리뷰) ── */
+.sm-preview{margin:48px 0;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:rgba(255,255,255,.02)}
+
+/* 데스크탑 GNB 바 */
+.sm-gnb{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.03)}
+.sm-logo{font-size:15px;font-weight:700;color:#fff;letter-spacing:.5px}
+.sm-nav{display:flex;align-items:center;gap:28px}
+.sm-nav-item{font-size:13px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.02em;cursor:pointer;padding:4px 0;position:relative;transition:color .3s}
+.sm-nav-item::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--main);transition:width .3s}
+.sm-nav-item:hover,.sm-nav-item.sm-active{color:#fff}
+.sm-nav-item:hover::after,.sm-nav-item.sm-active::after{width:100%}
+.sm-nav-group{position:relative}
+.sm-dropdown{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%) translateY(6px);opacity:0;visibility:hidden;transition:all .3s;z-index:10;padding-top:8px}
+.sm-nav-group:hover .sm-dropdown{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.sm-dropdown-box{background:rgba(30,30,30,.97);border:1px solid var(--border);border-radius:12px;padding:10px 8px;min-width:180px;display:flex;flex-direction:column;gap:2px}
+.sm-dropdown-box::before{content:'';position:absolute;top:2px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:rgba(30,30,30,.97);border-left:1px solid var(--border);border-top:1px solid var(--border);border-radius:2px 0 0 0}
+.sm-dropdown-link{font-size:13px;font-weight:500;color:rgba(255,255,255,.6);padding:8px 14px;border-radius:8px;transition:all .2s;cursor:default;display:flex;align-items:center;gap:6px}
+.sm-dropdown-link::before{content:'';display:inline-block;width:0;height:14px;border-radius:2px;background:var(--main);transition:width .2s}
+.sm-dropdown-link:hover{background:rgba(174,32,210,.08);color:var(--sub1)}
+.sm-dropdown-link:hover::before{width:3px}
+
+/* 데스크탑 콘텐츠 영역 (메인 페이지 미리보기) */
+.sm-body{padding:60px 40px;text-align:center;min-height:200px}
+.sm-body-title{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px}
+.sm-body-sub{font-size:14px;color:var(--muted)}
+
+/* 햄버거 + 모바일 풀스크린 메뉴 */
+.sm-hamburger{display:none;background:transparent;border:none;cursor:pointer;padding:4px}
+.sm-hamburger svg rect{fill:#fff}
+.sm-fullmenu{display:none;width:100%;background:rgba(0,0,0,.97);z-index:20;flex-direction:column;padding:24px}
+.sm-fullmenu.sm-open{display:flex}
+.sm-preview.sm-menu-open .sm-gnb{position:relative;z-index:21}
+.sm-preview.sm-menu-open .sm-body{display:none}
+.sm-fm-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.sm-fm-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:1px}
+.sm-fm-close{background:transparent;border:none;cursor:pointer;padding:4px}
+.sm-fm-close svg line{stroke:#fff}
+.sm-acc-item{border-bottom:1px solid rgba(255,255,255,.06)}
+.sm-acc-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 0;background:transparent;border:none;cursor:pointer;font-size:15px;font-weight:600;color:#fff}
+.sm-acc-btn svg{transition:transform .3s}
+.sm-acc-item.sm-open .sm-acc-btn svg{transform:rotate(180deg)}
+.sm-acc-sub{display:none;padding:0 0 10px;list-style:none;margin:0}
+.sm-acc-item.sm-open .sm-acc-sub{display:block}
+.sm-acc-sub li{padding:8px 0 8px 16px;font-size:14px;color:rgba(255,255,255,.6)}
+.sm-acc-link{display:block;padding:14px 0;font-size:15px;font-weight:600;color:#fff;text-decoration:none}
+
+/* 페이지 수 뱃지 */
+.sm-badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--main);color:var(--sub1);margin-left:12px;font-weight:600}
+
+.sm-body-mobile{display:none}
+
+@media(max-width:768px){
+  .sm-nav{display:none}
+  .sm-hamburger{display:flex}
+  .sm-preview{position:relative}
+  .sm-body-desktop{display:none}
+  .sm-body-mobile{display:block}
+}
+
+/* ── 기획의도 ── */
+.intent-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:36px;margin-bottom:24px;position:relative;overflow:hidden;
+}
+
+.intent-q{font-size:15px;font-weight:600;color:var(--fg);margin-bottom:10px}
+.intent-a{font-size:14px;color:var(--sub2);line-height:1.8;margin-bottom:16px}
+.intent-benefits{
+  background:rgba(174,32,210,.06);border:1px solid var(--main);
+  padding:16px 20px;border-radius:15px;
+}
+.intent-benefits li{font-size:13px;color:var(--sub2);margin-bottom:6px;padding-left:20px;position:relative;list-style:none}
+.intent-benefits li::before{content:'✓';position:absolute;left:0;color:var(--main);font-weight:700}
+
+/* ── 기대효과 ── */
+.outcome-card{
+  display:grid;grid-template-columns:2fr 1fr;gap:32px;align-items:center;
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:36px;margin-bottom:24px;position:relative;overflow:hidden;
+}
+
+.outcome-metric{font-size:40px;font-weight:800;color:var(--main);margin-bottom:6px}
+.outcome-label{font-size:18px;font-weight:700;margin-bottom:16px}
+.outcome-desc{font-size:14px;color:var(--sub2);line-height:1.8}
+
+/* 원형 차트 차오르기 애니메이션 */
+.chart-progress{stroke-dashoffset:377;transition:stroke-dashoffset 1.8s ease-out}
+.chart-progress.chart-filled{stroke-dashoffset:attr(data-target)}
+
+/* ── 왜 노페일 ── */
+.why-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:28px;margin-bottom:16px;transition:all .25s;
+}
+.why-card:hover{border-color:rgba(174,32,210,.3)}
+.why-card h3{font-size:18px;font-weight:700;margin-bottom:8px;color:var(--main)}
+.why-card p{font-size:14px;color:var(--sub2);line-height:1.7}
+
+/* ── 플랜 라벨 ── */
+.plan-block{margin-bottom:48px}
+.plan-block:last-child{margin-bottom:0}
+.plan-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:700;color:var(--sub1);
+  letter-spacing:.05em;margin-bottom:16px;
+}
+.plan-label .plan-tag{
+  font-size:11px;padding:3px 10px;border-radius:999px;
+  border:1px solid var(--main);color:var(--main);font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;
+}
+
+/* ── 가격표 (요금제) ── */
+.price-card.featured{border-color:rgba(174,32,210,.4);background:rgba(174,32,210,.06)}
+
+/* ── 견적 요약 (2-플랜) ── */
+.estimate-plans{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.estimate-box{
+  background:rgba(174,32,210,.06);border:1px solid rgba(174,32,210,.2);
+  border-radius:16px;padding:28px;
+}
+.estimate-box h3{font-size:16px;font-weight:700;margin-bottom:14px}
+.estimate-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:var(--sub2)}
+.estimate-row.total{font-size:18px;font-weight:800;color:#fff;border-top:2px solid var(--main);padding-top:14px;margin-top:8px}
+
+/* 옵션 카드 (공통) */
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+.price-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:28px;text-align:center;position:relative;
+}
+.price-card h3{font-size:18px;font-weight:700;margin-bottom:12px}
+.price-amount{font-size:28px;font-weight:800;color:#fff;margin-bottom:4px}
+.price-note{font-size:13px;color:var(--muted);margin-bottom:16px}
+.price-card ul{list-style:none;text-align:left}
+.price-card li{padding:8px 0 8px 20px;font-size:14px;color:var(--sub2);border-top:1px dashed rgba(255,255,255,.08);position:relative}
+.price-card li:first-child{border-top:none}
+.price-card li::before{content:'✓';position:absolute;left:0;color:var(--sub1);font-weight:700}
+
+@media(max-width:768px){
+  .estimate-plans{grid-template-columns:1fr}
+  .options-grid{grid-template-columns:1fr !important}
+}
+
+/* ── 타임라인 (히스토리 스타일) ── */
+.tl-wrap{position:relative;padding:40px 0 0}
+.tl-line-bg{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:100%;background:rgba(255,255,255,.08);z-index:1}
+.tl-line-fill{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:0;background:var(--main);z-index:2;transition:height .05s linear}
+.tl-item{position:relative;display:flex;align-items:flex-start;padding:0 0 48px;z-index:3}
+.tl-item:last-child{padding-bottom:0}
+.tl-left{flex:0 0 calc(50% - 20px);padding-right:40px}
+.tl-dot-wrap{flex:0 0 40px;display:flex;justify-content:center;padding-top:6px;position:relative;z-index:4}
+.tl-dot{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.15);transition:background .4s,box-shadow .4s}
+.tl-dot.tl-active{background:var(--main);box-shadow:0 0 0 4px rgba(174,32,210,.25)}
+.tl-right{flex:0 0 calc(50% - 20px);padding-left:40px}
+.tl-step-num{font-size:12px;font-weight:600;color:rgba(255,255,255,.3);letter-spacing:2px;margin:0 0 6px;transition:color .4s}
+.tl-step-num.tl-active{color:var(--main)}
+.tl-step-title{font-size:18px;font-weight:700;color:#fff;margin:0 0 4px;line-height:1.4}
+.tl-step-desc{font-size:14px;color:var(--sub2);margin:0;line-height:1.6}
+/* 홀수: 좌측 빈칸, 우측 콘텐츠 */
+.tl-item .tl-left{visibility:hidden}
+.tl-item .tl-right .tl-content{text-align:left}
+/* 짝수: 좌측 콘텐츠, 우측 빈칸 — 좌우 반전 */
+.tl-item.tl-reverse .tl-left{visibility:visible;order:1}
+.tl-item.tl-reverse .tl-left .tl-content{text-align:right}
+.tl-item.tl-reverse .tl-dot-wrap{order:2}
+.tl-item.tl-reverse .tl-right{visibility:hidden;order:3}
+/* 모바일: 1컬럼 */
+@media(max-width:768px){
+  .tl-line-bg,.tl-line-fill{left:7px;transform:none}
+  .tl-item,.tl-item.tl-reverse{flex-wrap:nowrap}
+  .tl-item .tl-left{display:none}
+  .tl-item.tl-reverse .tl-left{display:block;flex:1;padding-left:20px;padding-right:0;order:2;visibility:visible}
+  .tl-item.tl-reverse .tl-left .tl-content{text-align:left}
+  .tl-item.tl-reverse .tl-right{display:none}
+  .tl-dot-wrap,.tl-item.tl-reverse .tl-dot-wrap{flex:0 0 14px;padding-top:4px;order:1}
+  .tl-right{flex:1;padding-left:20px;padding-right:0;text-align:left;order:2;visibility:visible}
+}
+
+/* ── 반응형 ── */
+@media(max-width:960px){
+  .hero h1{font-size:36px}
+  .section-title{font-size:30px}
+  .ceo-grid{grid-template-columns:1fr}
+  .ceo-photo{height:400px;border-radius:16px 16px 0 0;background-position:center top}
+  .ceo-photo::after{border-radius:16px 16px 0 0}
+  .ceo-text{padding:24px}
+  .outcome-card{grid-template-columns:1fr}
+  .sm-preview{position:relative}
+}
+@media(max-width:640px){
+  .hero h1{font-size:28px}
+  .section{padding:80px 0}
+  .section-title{font-size:24px}
+  .card-grid{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+}
+
+
+/* ── 플랜 라벨 ── */
+.plan-block{margin-bottom:48px}
+.plan-block:last-child{margin-bottom:0}
+.plan-label{font-size:14px;font-weight:700;color:var(--sub1);letter-spacing:.05em;margin-bottom:8px}
+.plan-label .plan-tag{font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--main);color:var(--main);font-weight:600;text-transform:uppercase;letter-spacing:.1em}
+.plan-sub{font-size:14px;font-weight:600;color:var(--sub1);margin-bottom:4px}
+.plan-sub.plan-desc{font-size:13px;color:var(--muted);font-weight:400;margin-bottom:16px}
+/* ── 요금제 ── */
+.price-card.featured{border-color:rgba(174,32,210,.4);background:rgba(174,32,210,.06)}
+/* ── 견적 2-플랜 ── */
+.estimate-plans{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.estimate-box{background:rgba(174,32,210,.06);border:1px solid rgba(174,32,210,.2);border-radius:16px;padding:28px}
+.estimate-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;color:var(--sub2)}
+.estimate-row.total{font-size:18px;font-weight:800;color:#fff;border-top:2px solid var(--main);padding-top:14px;margin-top:8px}
+@media(max-width:768px){.estimate-plans{grid-template-columns:1fr}}
+@media(max-width:640px){.options-grid{grid-template-columns:1fr !important}}
+
+/* ── 포트폴리오 그리드 ── */
+.pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+@media(max-width:1023px){.pf-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.pf-grid{grid-template-columns:1fr;gap:28px}}
+.pf-card{display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:transform .25s ease}
+.pf-card:hover{transform:translateY(-4px)}
+.pf-thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#151820;border:1px solid rgba(255,255,255,.08);transition:box-shadow .25s ease}
+.pf-card:hover .pf-thumb{box-shadow:0 0 32px rgba(174,32,210,.25)}
+.pf-thumb img,.pf-thumb video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .25s ease}
+.pf-thumb video{opacity:0}
+.pf-thumb:hover video{opacity:1}
+.pf-info{display:flex;flex-direction:column;gap:4px}
+.pf-meta{font-size:13px;color:var(--muted)}
+.pf-title{font-size:18px;font-weight:700;color:#fff;margin:0}
+.pf-plan{font-size:13px;color:var(--muted)}
+.pf-tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.pf-tag{font-size:11px;color:var(--sub1);background:rgba(174,32,210,.08);border:1px solid rgba(174,32,210,.2);padding:4px 10px;border-radius:999px}
+
+</style>
+</head>
+<body>
+
+<!-- ===== 히어로 ===== -->
+<section class="hero" id="top"><div class="container">
+  <span class="hero-tag anim anim-d1">프리미엄 홈페이지 제작</span>
+  <h1 class="anim anim-d2">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)<br><span>홈페이지 제작 제안서</span></h1>
+  <p class="muted anim anim-d3">노페일 디자인 | 담당자: 양리건 | 사업자번호: 274-26-01707</p>
+  <a href="#s-ceo" class="cta anim anim-d4">제안서 보기 →</a>
+</div></section>
+
+<!-- ===== CEO 소개 ===== -->
+<section class="section" id="s-ceo"><div class="container"><div class="ceo-grid">
+  <div class="ceo-photo anim"></div>
+  <div class="ceo-text">
+    <div class="eyebrow anim anim-d1" style="text-align:left">WHO HE IS</div>
+    <h2 class="section-title anim anim-d2" style="font-size:32px;text-align:left">Meet the CEO of<br>NoFail Design</h2>
+    <p class="anim anim-d3">노페일 디자인은 <strong>실패에서 시작된 회사</strong>입니다.</p>
+    <p class="anim anim-d3">5년 전 사업 실패로 큰 빚을 지게 되었지만, 그 경험에서 "실패하지 않는 방법"을 배웠습니다.</p>
+    <p class="anim anim-d3">그 후 <strong>1,000건이 넘는 프로젝트</strong>와 <strong>2억 원 규모의 광고 집행</strong>을 통해 성과가 나는 디자인의 원칙을 검증했고, <strong>200명이 넘는 디자이너</strong>를 컨설팅하며 성공의 방법론을 다듬어왔습니다.</p>
+    <div class="ceo-credit anim anim-d4">양리건<br><span style="font-size:14px;color:var(--muted)">노페일 디자인</span></div>
+  </div>
+</div></div></section>
+
+<!-- ===== 타겟 고객 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Target Customer</div><h2 class="section-title anim anim-d2">타겟 고객 분석</h2><p class="section-sub anim anim-d3">필라테스에 관심이 있는 20~40대 여성으로, 필라테스 강사로의 커리어 전환을 희망하거나 자격증 취득을 통해 새로운 직업을 찾고자 하는 분들입니다. 현재 직장을 다니면서도 주말이나 야간 시간을 활용해 체계적인 교육을 받고 싶어 하며, 단순히 자격증만이 아니라 실제로 강사로 활동할 수 있는 실무 역량을 갖추고 싶어 합니다.</p><div class="intent-card anim anim-d3" style="margin-bottom:48px"><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:12px">타겟 고객 특성</h3><ul class="intent-benefits" style="border:none;background:none;padding:0"><li>필라테스 수강 경험이 있으며 강사 직업에 관심이 높음</li><li>현재 직장인이거나 경력 전환을 고려 중인 20~40대 여성</li><li>주말/야간 시간을 활용한 교육 일정을 선호함</li><li>자격증 취득뿐 아니라 실제 취업/창업까지 고려하는 실용주의 성향</li><li>소수 정예 교육을 통해 강사와 충분히 소통하며 배우고 싶어 함</li></ul></div><h3 class="anim anim-d3" style="font-size:24px;font-weight:700;text-align:center;margin-bottom:32px">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)의 고객들이 겪는 불편함</h3><div class="card-grid"><div class="card anim anim-d3"><div class="num">01</div><h3>교육 과정의 전문성과 신뢰도 판단 어려움</h3><p>온라인에서 여러 교육기관을 비교할 때, 어떤 곳이 정말 체계적이고 전문적인 교육을 제공하는지 판단하기 어렵습니다. 강사진 경력, 커리큘럼 구성, 자격증 인증 여부 등을 명확히 확인하고 싶어 합니다.</p></div><div class="card anim anim-d4"><div class="num">02</div><h3>교육 일정과 비용 정보 접근성 부족</h3><p>직장을 다니면서 교육을 받아야 하므로 주중/주말 과정 여부, 교육 기간, 수강료 등의 정보가 명확하지 않으면 상담 문의 자체를 망설이게 됩니다. 일정과 비용을 쉽게 확인하고 싶어 합니다.</p></div><div class="card anim anim-d5"><div class="num">03</div><h3>수료 후 진로에 대한 불확실성</h3><p>자격증을 취득한 후 실제로 강사로 취업할 수 있을지, 스튜디오 창업은 어떻게 해야 하는지 등 수료 후 진로에 대한 구체적인 정보가 부족해 교육 투자를 망설이게 됩니다.</p></div><div class="card anim anim-d5"><div class="num">04</div><h3>대형 교육기관의 획일적 교육 방식</h3><p>대형 교육기관은 수강생이 많아 개인별 맞춤 지도를 받기 어렵고, 실무보다는 이론 중심 교육이 많아 실제 강사 활동에 필요한 실전 역량을 쌓기 어렵습니다.</p></div></div></div></section>
+
+<!-- ===== 문제점 (리뉴얼만) ===== -->
+
+
+<!-- ===== 개선방안 (리뉴얼) 또는 제작전략 (신규) ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Strategy</div><h2 class="section-title anim anim-d2">실무 중심 전문 강사 양성, 자격증을 넘어 진짜 강사로 만드는 홈페이지</h2><p class="section-sub anim anim-d3">필라테스 강사 교육 시장에서 '자격증 취득'이 아닌 '실제로 일할 수 있는 강사 양성'을 핵심 가치로 제시합니다. 소규모 스튜디오의 밀착형 교육, 유연한 일정, 수료 후 취업/창업 지원까지 토탈 케어를 제공하는 차별화된 교육기관임을 명확히 전달하여, 타겟 고객의 신뢰를 얻고 상담 전환을 극대화합니다.</p><div class="card-grid"><div class="card anim anim-d3"><div class="num">01</div><h3>전문성과 신뢰도를 시각적으로 입증</h3><p>강사진 프로필, 자격증 인증, 커리큘럼 상세 정보를 체계적으로 제시하여 교육 과정의 전문성을 즉각 전달합니다.</p><ul><li>강사진 경력 및 자격증 상세 공개</li><li>단계별 커리큘럼 시각화 (이론-실기-실습 단계 구분)</li><li>공인 자격증 인증 정보 및 협회 제휴 내역 명시</li><li>수료생 후기 및 만족도 데이터 제시</li></ul></div><div class="card anim anim-d4"><div class="num">02</div><h3>교육 일정과 비용 정보의 즉각적 접근성</h3><p>주중/주말/집중 과정별 일정 캘린더와 수강료 가이드를 명확히 제시하여 잠재 고객의 의사결정을 돕습니다.</p><ul><li>과정별 교육 일정 캘린더 제공 (주중/주말/집중 과정 구분)</li><li>수강료 및 할부/카드 결제 옵션 안내</li><li>간편 상담 신청 폼 및 원클릭 전화 상담 버튼</li><li>카카오톡 상담 연동으로 모바일 접근성 강화</li></ul></div><div class="card anim anim-d5"><div class="num">03</div><h3>수료 후 진로 지원 프로그램 가시화</h3><p>취업률, 창업 사례, 동문 네트워크 등을 구체적으로 공개하여 교육 투자 가치를 명확히 전달합니다.</p><ul><li>수료생 취업률 및 제휴 스튜디오 취업 연계 프로그램 소개</li><li>창업 성공 사례 및 창업 컨설팅 지원 내역 공개</li><li>동문 커뮤니티 및 네트워킹 활동 소개</li><li>수료 후 재교육 및 심화 과정 안내</li></ul></div><div class="card anim anim-d5"><div class="num">04</div><h3>소수 정예 밀착 교육의 차별화 강조</h3><p>대형 교육기관과의 차별점인 1:1 밀착 교육, 실무 중심 커리큘럼을 스토리텔링으로 전달합니다.</p><ul><li>소수 정예 교육의 장점 (강사와의 충분한 소통, 개인별 맞춤 지도)</li><li>실제 스튜디오 운영 경험 기반 실무 교육 강조</li><li>수강생 개개인의 학습 속도에 맞춘 유연한 커리큘럼</li><li>교육 현장 사진 및 영상으로 생생한 교육 분위기 전달</li></ul></div><div class="card anim anim-d5"><div class="num">05</div><h3>모바일 최적화 및 즉각 전환 동선 구축</h3><p>20~40대 여성 타겟층의 모바일 사용 패턴에 맞춰 반응형 디자인과 즉각 상담 전환 동선을 구축합니다.</p><ul><li>모바일 최적화 반응형 디자인</li><li>메인 페이지 상단 고정 CTA 버튼 (상담 신청, 전화 연결)</li><li>모든 페이지 하단에 상담 신청 폼 배치</li><li>카카오톡 채널 연동 및 플로팅 버튼</li></ul></div></div></div></section>
+
+<!-- ===== 사이트맵 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Sitemap</div><h2 class="section-title anim anim-d2">사이트맵</h2><p class="section-sub anim anim-d3">두 가지 플랜으로 제안드립니다</p><div class="plan-block anim anim-d3"><div class="plan-label"><span class="plan-tag">Light</span></div><div class="plan-sub">핵심 교육 정보와 상담 전환에 집중한 기본 구성</div><div class="plan-sub plan-desc">· 디자인 8p + 게시판 2p = 총 10페이지</div><div class="sm-preview"><div class="sm-gnb"><div class="sm-logo">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)</div><nav class="sm-nav"><div class="sm-nav-group"><span class="sm-nav-item sm-active">메인</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">메인</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">스튜디오 소개</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">스튜디오 소개</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">교육 과정</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">교육 과정 안내</span><span class="sm-dropdown-link">커리큘럼</span><span class="sm-dropdown-link">강사진 소개</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">수강 안내</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">수강료 및 일정</span><span class="sm-dropdown-link">수강 신청 절차</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">수료생 이야기</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">수료생 후기</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">커뮤니티</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">공지사항</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">상담 문의</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">상담 문의</span></div></div></div></nav><button class="sm-hamburger" onclick="document.getElementById('sm-fm-light').classList.add('sm-open');this.closest('.sm-preview').classList.add('sm-menu-open')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18" fill="none"><rect width="24" height="2" rx="1" fill="white"/><rect x="8" y="8" width="16" height="2" rx="1" fill="white"/><rect x="4" y="16" width="20" height="2" rx="1" fill="white"/></svg></button></div><div class="sm-body"><p class="sm-body-title">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)</p><p class="sm-body-sub sm-body-desktop">사이트맵 미리보기 · 메뉴에 마우스를 올려보세요<span class="sm-badge">10p</span></p><p class="sm-body-sub sm-body-mobile">왼쪽 상단 ☰ 을 클릭해서 메뉴를 확인해보세요<span class="sm-badge">10p</span></p></div><div class="sm-fullmenu" id="sm-fm-light"><div class="sm-fm-header"><span class="sm-fm-title">MENU</span><button class="sm-fm-close" onclick="document.getElementById('sm-fm-light').classList.remove('sm-open');document.getElementById('sm-fm-light').closest('.sm-preview').classList.remove('sm-menu-open')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><line x1="2" y1="2" x2="22" y2="22" stroke="white" stroke-width="2"/><line x1="22" y1="2" x2="2" y2="22" stroke="white" stroke-width="2"/></svg></button></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>메인</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>메인</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>스튜디오 소개</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>스튜디오 소개</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>교육 과정</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>교육 과정 안내</li><li>커리큘럼</li><li>강사진 소개</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>수강 안내</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>수강료 및 일정</li><li>수강 신청 절차</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>수료생 이야기</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>수료생 후기</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>커뮤니티</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>공지사항</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>상담 문의</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>상담 문의</li></ul></div></div></div></div><div class="plan-block anim anim-d4"><div class="plan-label"><span class="plan-tag">Premium</span></div><div class="plan-sub">교육 과정 상세 정보와 수료 후 지원까지 포괄하는 풀 구성</div><div class="plan-sub plan-desc">· 디자인 12p + 게시판 3p = 총 15페이지</div><div class="sm-preview"><div class="sm-gnb"><div class="sm-logo">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)</div><nav class="sm-nav"><div class="sm-nav-group"><span class="sm-nav-item sm-active">메인</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">메인</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">스튜디오 소개</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">스튜디오 소개</span><span class="sm-dropdown-link">교육 철학</span><span class="sm-dropdown-link">시설 안내</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">교육 과정</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">교육 과정 안내</span><span class="sm-dropdown-link">커리큘럼</span><span class="sm-dropdown-link">강사진 소개</span><span class="sm-dropdown-link">자격증 안내</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">수강 안내</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">수강료 및 일정</span><span class="sm-dropdown-link">수강 신청 절차</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">수료 후 지원</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">취업 지원 프로그램</span><span class="sm-dropdown-link">창업 지원 프로그램</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">수료생 이야기</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">수료생 후기</span><span class="sm-dropdown-link">수료생 인터뷰</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">커뮤니티</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">공지사항</span><span class="sm-dropdown-link">자료실</span></div></div></div><div class="sm-nav-group"><span class="sm-nav-item">상담 문의</span><div class="sm-dropdown"><div class="sm-dropdown-box"><span class="sm-dropdown-link">상담 문의</span></div></div></div></nav><button class="sm-hamburger" onclick="document.getElementById('sm-fm-premium').classList.add('sm-open');this.closest('.sm-preview').classList.add('sm-menu-open')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 18" fill="none"><rect width="24" height="2" rx="1" fill="white"/><rect x="8" y="8" width="16" height="2" rx="1" fill="white"/><rect x="4" y="16" width="20" height="2" rx="1" fill="white"/></svg></button></div><div class="sm-body"><p class="sm-body-title">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)</p><p class="sm-body-sub sm-body-desktop">사이트맵 미리보기 · 메뉴에 마우스를 올려보세요<span class="sm-badge">15p</span></p><p class="sm-body-sub sm-body-mobile">왼쪽 상단 ☰ 을 클릭해서 메뉴를 확인해보세요<span class="sm-badge">15p</span></p></div><div class="sm-fullmenu" id="sm-fm-premium"><div class="sm-fm-header"><span class="sm-fm-title">MENU</span><button class="sm-fm-close" onclick="document.getElementById('sm-fm-premium').classList.remove('sm-open');document.getElementById('sm-fm-premium').closest('.sm-preview').classList.remove('sm-menu-open')"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><line x1="2" y1="2" x2="22" y2="22" stroke="white" stroke-width="2"/><line x1="22" y1="2" x2="2" y2="22" stroke="white" stroke-width="2"/></svg></button></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>메인</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>메인</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>스튜디오 소개</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>스튜디오 소개</li><li>교육 철학</li><li>시설 안내</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>교육 과정</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>교육 과정 안내</li><li>커리큘럼</li><li>강사진 소개</li><li>자격증 안내</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>수강 안내</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>수강료 및 일정</li><li>수강 신청 절차</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>수료 후 지원</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>취업 지원 프로그램</li><li>창업 지원 프로그램</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>수료생 이야기</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>수료생 후기</li><li>수료생 인터뷰</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>커뮤니티</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>공지사항</li><li>자료실</li></ul></div><div class="sm-acc-item" onclick="this.classList.toggle('sm-open')"><button class="sm-acc-btn"><span>상담 문의</span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="7" viewBox="0 0 12 7" fill="none"><line x1="0.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/><line x1="11.5" y1="0.5" x2="6" y2="6" stroke="white" stroke-width="1.5"/></svg></button><ul class="sm-acc-sub"><li>상담 문의</li></ul></div></div></div></div></div></section>
+
+<!-- ===== 기획의도 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Page Intentions</div><h2 class="section-title anim anim-d2">메뉴별 기획의도</h2><p class="section-sub anim anim-d3">왜 이렇게 구성했는지, 어떤 효과가 있는지</p><div class="intent-card anim anim-d3"><div class="num">01</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">메인</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">메인 페이지는 방문자가 가장 먼저 접하는 페이지로, 스튜디오의 핵심 가치인 '실무 중심 전문 강사 양성'을 즉각 전달하고 상담 신청으로 유도하는 역할을 합니다. 히어로 영역에는 강사 교육 현장 영상 또는 이미지와 함께 '실제로 일할 수 있는 강사로 만듭니다'라는 핵심 메시지를 배치하고, 바로 아래 상담 신청 CTA 버튼을 노출합니다. 이어서 교육 과정 3종(기본/심화/재교육 과정) 소개 섹션, 강사진 프로필 미리보기, 수료생 후기 3건, 교육 일정 캘린더, 취업/창업 지원 프로그램 안내, 하단 상담 신청 폼이 배치됩니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>첫 화면에서 스튜디오의 차별화된 교육 철학을 명확히 전달</li><li>상담 신청 CTA를 여러 섹션에 배치하여 전환율 극대화</li><li>교육 과정, 강사진, 수료생 후기를 한눈에 확인하여 신뢰도 구축</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">02</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">스튜디오 소개</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">스튜디오의 설립 배경, 교육 철학, 운영진 소개를 통해 신뢰도를 구축하고, 대형 교육기관과의 차별점을 명확히 전달합니다. 대표 강사의 인사말과 함께 '왜 소수 정예 교육이 중요한가', '실무 중심 교육이 왜 필요한가'를 스토리텔링 방식으로 설명합니다. 스튜디오 시설 사진, 교육 장비 소개, 협회 제휴 및 인증 내역이 포함됩니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>교육기관의 전문성과 신뢰도를 입증</li><li>소수 정예 교육의 장점을 설득력 있게 전달</li><li>시설 및 장비 사진으로 교육 환경의 우수성 강조</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">03</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">교육 과정 안내</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">기본 과정, 심화 과정, 재교육 과정 등 제공하는 모든 교육 과정을 한눈에 비교할 수 있도록 구성합니다. 각 과정별로 교육 대상, 교육 기간, 교육 목표, 취득 가능 자격증, 수강료를 표 형태로 정리하고, 과정별 상세 페이지로 이동할 수 있는 링크를 제공합니다. 주중/주말/집중 과정 구분을 명확히 하여 직장인도 수강 가능함을 강조합니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>교육 과정 비교를 통해 자신에게 맞는 과정을 쉽게 선택</li><li>주중/주말 과정 구분으로 직장인 타겟층의 접근성 강화</li><li>수강료 정보를 투명하게 공개하여 문의 장벽 낮춤</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">04</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">커리큘럼</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">교육 과정의 주차별 커리큘럼을 상세히 공개하여 교육의 체계성을 입증합니다. 이론-실기-실습 단계를 시각적으로 구분하고, 각 주차별로 학습 내용, 실습 항목, 평가 방법을 명시합니다. 예를 들어 1주차는 필라테스 기초 이론 및 해부학, 2주차는 기본 동작 실기, 3주차는 기구 활용 실습 등으로 구성됩니다. 커리큘럼 PDF 다운로드 기능도 제공합니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>주차별 학습 내용 공개로 교육 과정의 투명성 확보</li><li>이론-실기-실습 단계 구분으로 체계적 교육임을 강조</li><li>커리큘럼 다운로드로 오프라인 검토 가능</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">05</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">강사진 소개</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">강사진의 경력, 자격증, 교육 철학을 상세히 공개하여 교육 품질에 대한 신뢰를 구축합니다. 각 강사별로 프로필 사진, 주요 경력, 보유 자격증, 전문 분야, 교육 철학을 소개하고, 강사 인터뷰 영상이나 수업 현장 사진을 포함합니다. 강사진이 국제 자격증 보유자이거나 유명 스튜디오 출신임을 강조합니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>강사진의 전문성을 입증하여 교육 품질에 대한 신뢰 구축</li><li>강사별 전문 분야 공개로 수강생이 원하는 강사 선택 가능</li><li>강사 인터뷰 영상으로 친근감과 신뢰도 동시 확보</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">06</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">수강료 및 일정</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">교육 과정별 수강료와 교육 일정을 명확히 공개하여 잠재 고객의 의사결정을 돕습니다. 수강료는 일시불/할부 옵션을 모두 안내하고, 카드 결제 가능 여부도 명시합니다. 교육 일정은 캘린더 형태로 제공하여 주중/주말/집중 과정별 개강 일정을 한눈에 확인할 수 있도록 합니다. 조기 등록 할인, 재수강 할인 등의 프로모션 정보도 포함합니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>수강료 투명 공개로 문의 장벽 낮춤</li><li>할부/카드 결제 옵션 안내로 수강 결정 용이</li><li>교육 일정 캘린더로 직장인도 일정 조율 가능</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">07</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">취업 지원 프로그램</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">수료 후 취업 지원 프로그램을 구체적으로 공개하여 교육 투자 가치를 명확히 전달합니다. 제휴 스튜디오 목록, 취업률 데이터, 취업 성공 사례, 이력서 작성 및 면접 코칭 지원 내역을 포함합니다. 수료생이 실제로 어떤 스튜디오에 취업했는지, 평균 초봉은 얼마인지 등의 정보를 공개하여 현실적인 진로 계획을 세울 수 있도록 돕습니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>취업률 및 성공 사례 공개로 교육 투자 가치 입증</li><li>제휴 스튜디오 목록 공개로 취업 가능성 구체화</li><li>이력서/면접 코칭 지원으로 실질적 취업 준비 도움</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">08</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">창업 지원 프로그램</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">필라테스 스튜디오 창업을 희망하는 수료생을 위한 지원 프로그램을 소개합니다. 창업 컨설팅 내용(입지 선정, 인테리어, 장비 구매, 마케팅 전략 등), 창업 성공 사례, 창업 비용 가이드, 동문 네트워크 활용 방법을 포함합니다. 실제로 창업에 성공한 수료생의 인터뷰와 스튜디오 사진을 게재하여 창업 가능성을 구체적으로 보여줍니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>창업 컨설팅 지원으로 창업 희망자의 불안감 해소</li><li>창업 성공 사례로 창업 가능성 입증</li><li>창업 비용 가이드로 현실적인 창업 계획 수립 지원</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">09</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">수료생 인터뷰</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">수료생의 생생한 후기를 인터뷰 형식으로 제공하여 교육 과정의 실제 효과를 전달합니다. 수료생이 교육 전후로 어떻게 변화했는지, 현재 어떤 활동을 하고 있는지, 교육 과정에서 가장 도움이 된 부분은 무엇인지 등을 인터뷰 영상 또는 텍스트로 제공합니다. 수료생의 사진과 함께 현재 근무 중인 스튜디오나 운영 중인 스튜디오 정보도 포함합니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>수료생의 실제 경험 공유로 교육 효과 입증</li><li>인터뷰 영상으로 신뢰도와 공감대 형성</li><li>수료 후 진로 사례를 구체적으로 보여줌</li></ul></div></div><div class="intent-card anim anim-d3"><div class="num">10</div><h3 style="font-size:20px;font-weight:700;color:var(--main);margin-bottom:4px">상담 문의</h3><p class="intent-q">왜 이 페이지가 필요한가요?</p><p class="intent-a">상담 신청 폼, 전화 상담, 카카오톡 상담 등 다양한 상담 채널을 제공하여 잠재 고객의 문의를 최대한 수용합니다. 상담 신청 폼은 이름, 연락처, 희망 과정, 문의 내용을 간단히 입력하도록 구성하고, 제출 즉시 자동 응답 메시지를 발송합니다. 전화 상담 가능 시간, 카카오톡 채널 QR코드, 오시는 길 지도를 함께 제공합니다.</p><div class="intent-benefits"><p style="font-size:14px;font-weight:600;margin-bottom:10px">이렇게 하면 뭐가 좋아지나요?</p><ul><li>다양한 상담 채널 제공으로 문의 접근성 극대화</li><li>간편한 상담 신청 폼으로 전환율 향상</li><li>자동 응답 메시지로 빠른 피드백 제공</li></ul></div></div></div></section>
+
+<!-- ===== 기대효과 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Expected Results</div><h2 class="section-title anim anim-d2">기대효과</h2><div class="outcome-card anim anim-d3"><div><div class="outcome-metric">+150%</div><div class="outcome-label">상담 신청 전환율</div><p class="outcome-desc">교육 과정, 수강료, 일정 정보를 투명하게 공개하고, 메인 페이지와 각 페이지 하단에 상담 신청 CTA를 배치하여 상담 신청 전환율을 기존 대비 150% 향상시킬 수 있습니다.</p></div><div style="text-align:center"><svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/><circle class="chart-progress" cx="80" cy="80" r="60" fill="none" stroke="#AE20D2" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" data-target="132"/></svg></div></div><div class="outcome-card anim anim-d3"><div><div class="outcome-metric">40초↑</div><div class="outcome-label">모바일 방문자 체류 시간</div><p class="outcome-desc">모바일 최적화 반응형 디자인과 직관적인 네비게이션 구조로 모바일 방문자의 평균 체류 시간을 40초 이상 증가시켜, 교육 정보를 충분히 탐색할 수 있도록 합니다.</p></div><div style="text-align:center"><svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/><circle class="chart-progress" cx="80" cy="80" r="60" fill="none" stroke="#AE20D2" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" data-target="94"/></svg></div></div><div class="outcome-card anim anim-d3"><div><div class="outcome-metric">+200%</div><div class="outcome-label">교육 과정 페이지 조회율</div><p class="outcome-desc">메인 페이지에서 교육 과정 3종을 미리보기로 제공하고, 커리큘럼 상세 페이지로 쉽게 이동할 수 있도록 구성하여 교육 과정 페이지 조회율을 200% 향상시킵니다.</p></div><div style="text-align:center"><svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/><circle class="chart-progress" cx="80" cy="80" r="60" fill="none" stroke="#AE20D2" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" data-target="75"/></svg></div></div><div class="outcome-card anim anim-d3"><div><div class="outcome-metric">+180%</div><div class="outcome-label">수료생 후기 페이지 조회율</div><p class="outcome-desc">메인 페이지에 수료생 후기 3건을 노출하고, 수료생 인터뷰 페이지로 연결하여 수료생 후기 페이지 조회율을 180% 향상시켜 신뢰도를 강화합니다.</p></div><div style="text-align:center"><svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/><circle class="chart-progress" cx="80" cy="80" r="60" fill="none" stroke="#AE20D2" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" data-target="113"/></svg></div></div><div class="outcome-card anim anim-d3"><div><div class="outcome-metric">+120%</div><div class="outcome-label">전화 상담 문의 증가율</div><p class="outcome-desc">모바일 환경에서 원클릭 전화 상담 버튼을 상단 고정 배치하고, 카카오톡 상담 채널을 연동하여 전화 상담 문의를 120% 증가시킵니다.</p></div><div style="text-align:center"><svg width="160" height="160" viewBox="0 0 160 160" style="transform:rotate(-90deg)"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="10"/><circle class="chart-progress" cx="80" cy="80" r="60" fill="none" stroke="#AE20D2" stroke-width="10" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" data-target="151"/></svg></div></div></div></section>
+
+<!-- ===== 왜 노페일 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Why NoFail Design</div><h2 class="section-title anim anim-d2">왜 노페일디자인인가</h2><div class="why-card anim anim-d3"><h3>교육 업종 특화 홈페이지 제작 경험</h3><p>노페일디자인은 교육 업종의 특성을 깊이 이해하고 있으며, 상담 전환을 극대화하는 사이트맵과 콘텐츠 구성 노하우를 보유하고 있습니다. 교육 과정 안내, 수강료 공개, 수료생 후기 등 교육 업종에 필수적인 요소를 효과적으로 배치합니다.</p></div><div class="why-card anim anim-d4"><h3>타겟 고객 페인포인트 기반 전략 수립</h3><p>단순히 예쁜 디자인이 아니라, 타겟 고객이 겪는 실제 문제점(교육 신뢰도 판단 어려움, 일정/비용 정보 부족 등)을 분석하고, 이를 해결하는 콘텐츠와 동선을 설계합니다.</p></div><div class="why-card anim anim-d5"><h3>모바일 최적화 및 즉각 전환 동선 구축</h3><p>20~40대 여성 타겟층의 모바일 사용 패턴을 고려하여 반응형 디자인과 원클릭 상담 버튼, 카카오톡 연동 등 즉각 전환 동선을 구축합니다.</p></div><div class="why-card anim anim-d5"><h3>차별화 포인트를 시각적으로 강조</h3><p>소수 정예 교육, 실무 중심 커리큘럼, 수료 후 취업/창업 지원 등 고객사의 차별화 포인트를 메인 페이지와 주요 페이지에서 시각적으로 강조하여 경쟁사와의 차별성을 명확히 전달합니다.</p></div><div class="why-card anim anim-d5"><h3>투명한 견적과 체계적인 프로젝트 관리</h3><p>페이지 수, 섹션 수에 따른 명확한 견적 체계를 제시하고, 제작 단계별 일정과 산출물을 투명하게 공유하여 고객사가 안심하고 프로젝트를 진행할 수 있도록 합니다.</p></div><div class="why-card anim anim-d5"><h3>SEO 최적화 및 검색 노출 강화</h3><p>필라테스 강사 교육, 필라테스 자격증 등 타겟 키워드에 대한 SEO 최적화를 진행하여 검색 엔진에서의 노출을 강화하고, 자연 유입 트래픽을 증가시킵니다.</p></div></div></section>
+
+<!-- ===== 요금제 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Pricing</div><h2 class="section-title anim anim-d2">요금제</h2><p class="section-sub anim anim-d3">프로젝트 유형에 맞는 최적의 플랜을 제안합니다</p><div class="options-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:24px"><div class="price-card featured anim anim-d3"><h3>회사홈페이지</h3><div class="price-amount">420만원</div><div class="price-note">부가세 별도 · 제작 기간 총 4주</div><ul><li>기획부터 디자인까지</li><li>기본 10p 포함 (1p당 최대 5섹션)</li><li>디자인 페이지 추가 시 30만원/p</li><li>게시판·입력폼 추가 시 15만원/p</li><li>수정 횟수 무제한</li></ul></div><div class="price-card anim anim-d4"><h3>옵션1. AI컨텐츠 생성</h3><div class="price-amount">150만원</div><div class="price-note">부가세 별도</div><ul><li>AI브랜드 광고 영상 1개</li><li>AI이미지 컨텐츠 20개</li></ul></div><div class="price-card anim anim-d5"><h3>옵션2. 외국어 버전</h3><div class="price-amount">제작비의 20%</div><div class="price-note">1개 언어당 · 부가세 별도</div><ul><li>국문 기본 · 필요 언어만 선택</li></ul></div></div></div></section>
+
+<!-- ===== 제작 비용 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Estimate</div><h2 class="section-title anim anim-d2">더컨트롤로지(필라테스 온라인 VOD 강의&amp;오프라인 강의)의 제작 비용</h2><p class="section-sub anim anim-d3">사이트맵 구성에 따른 맞춤 견적입니다</p><div class="estimate-plans anim anim-d4"><div class="estimate-box"><div style="margin-bottom:14px"><div style="margin-bottom:8px"><span style="font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--main);color:var(--main);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Light</span></div><h3 style="font-size:16px;font-weight:700;margin:0">핵심 교육 정보와 상담 전환에 집중한 기본 구성</h3></div><div style="font-size:13px;color:var(--muted);margin-bottom:12px">디자인 8p + 게시판 2p = 총 10페이지</div><div class="estimate-row"><span>기본 제작비 (회사홈페이지 10p)</span><span>420만원</span></div><div class="estimate-row total"><span>총 견적</span><span>420만원 (부가세별도)</span></div></div><div class="estimate-box"><div style="margin-bottom:14px"><div style="margin-bottom:8px"><span style="font-size:11px;padding:3px 10px;border-radius:999px;border:1px solid var(--main);color:var(--main);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Premium</span></div><h3 style="font-size:16px;font-weight:700;margin:0">교육 과정 상세 정보와 수료 후 지원까지 포괄하는 풀 구성</h3></div><div style="font-size:13px;color:var(--muted);margin-bottom:12px">디자인 12p + 게시판 3p = 총 15페이지</div><div class="estimate-row"><span>기본 제작비 (회사홈페이지 10p)</span><span>420만원</span></div><div class="estimate-row"><span>디자인 페이지 추가 (2p x 30만원)</span><span>60만원</span></div><div class="estimate-row"><span>게시판 페이지 추가 (3p x 15만원)</span><span>45만원</span></div><div class="estimate-row total"><span>총 견적</span><span>525만원 (부가세별도)</span></div></div></div></div></section>
+
+<!-- ===== 제작 범위 ===== -->
+<section class="section"><div class="container"><div class="eyebrow anim anim-d1">Scope of Work</div><h2 class="section-title anim anim-d2">제작 범위</h2><p class="section-sub anim anim-d3">제작 상세 내용</p><div class="intent-card anim anim-d3"><ul class="intent-benefits" style="border:none;background:none;padding:0"><li>홈페이지 기획</li><li>홈페이지 디자인</li><li>반응형 웹(PC+M) 제작 : 디자인으로 진행시 디자인파일만 제공</li><li>제작 완료 후 작업 범위 오류시 무상AS</li><li>동적 웹 디자인 효과/레이아웃을 위한 코딩 작업 포함</li><li>유료 라이선스 이미지 활용, 편집 및 영구 사용</li><li>최상위 버전 보안 SSL 연동</li><li>SEO 포털사이트 검색 노출 최적화 - 네이버 검색 노출 - 구글 검색 노출</li><li>실시간 상담 : 카카오 채널 / 카카오 오픈채팅방 / 채널톡 / 네이버 톡톡</li><li>입력폼 연동 : 상담, 제휴 등의 신청</li><li>관리자페이지 &amp; 디자인편집기 포함</li><li>도메인 연결</li><li>고객 반응 알림(이메일/카카오 채널/문자) 기능 제공(선택)</li></ul></div></div></section>
+
+<!-- ===== 타임라인 ===== -->
+<!-- ===== 타임라인 ===== -->
+<section class="section" id="s10">
+  <div class="container">
+    <div class="eyebrow anim anim-d1">Timeline</div>
+    <h2 class="section-title anim anim-d2">제작 타임라인</h2>
+    <p class="section-sub anim anim-d3">상담부터 런칭까지, 약 4주간의 여정</p>
+
+    <div class="tl-wrap">
+      <div class="tl-line-bg"></div>
+      <div class="tl-line-fill" id="tl-fill"></div>
+
+      <!-- STEP 1: 우측 -->
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-content"></div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 01</p>
+          <p class="tl-step-title">상담</p>
+          <p class="tl-step-desc">프로젝트 목표와 요구사항을 파악합니다</p>
+        </div></div>
+      </div>
+
+      <!-- STEP 2: 좌측 -->
+      <div class="tl-item tl-reverse">
+        <div class="tl-left"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 02</p>
+          <p class="tl-step-title">계약금</p>
+          <p class="tl-step-desc">계약 체결 후 착수금 입금</p>
+        </div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content"></div></div>
+      </div>
+
+      <!-- STEP 3: 우측 -->
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-content"></div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 03</p>
+          <p class="tl-step-title">기획</p>
+          <p class="tl-step-desc">사이트맵 · 와이어프레임 · 콘텐츠 기획</p>
+        </div></div>
+      </div>
+
+      <!-- STEP 4: 좌측 -->
+      <div class="tl-item tl-reverse">
+        <div class="tl-left"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 04</p>
+          <p class="tl-step-title">컨펌</p>
+          <p class="tl-step-desc">기획안 리뷰 및 최종 확인</p>
+        </div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content"></div></div>
+      </div>
+
+      <!-- STEP 5: 우측 -->
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-content"></div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 05</p>
+          <p class="tl-step-title">중도금</p>
+          <p class="tl-step-desc">디자인 착수 전 중도금 입금</p>
+        </div></div>
+      </div>
+
+      <!-- STEP 6: 좌측 -->
+      <div class="tl-item tl-reverse">
+        <div class="tl-left"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 06</p>
+          <p class="tl-step-title">디자인</p>
+          <p class="tl-step-desc">시안 제작 · 수정 무제한 · 최종 확정</p>
+        </div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content"></div></div>
+      </div>
+
+      <!-- STEP 7: 우측 -->
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-content"></div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 07</p>
+          <p class="tl-step-title">개발</p>
+          <p class="tl-step-desc">반응형 코딩 · 기능 구현 · QA 테스트</p>
+        </div></div>
+      </div>
+
+      <!-- STEP 8: 좌측 -->
+      <div class="tl-item tl-reverse">
+        <div class="tl-left"><div class="tl-content">
+          <p class="tl-step-num" data-tl-color>STEP 08</p>
+          <p class="tl-step-title">런칭</p>
+          <p class="tl-step-desc">도메인 연결 · SSL · 검색 노출 세팅 완료</p>
+        </div></div>
+        <div class="tl-dot-wrap"><div class="tl-dot" data-tl-dot></div></div>
+        <div class="tl-right"><div class="tl-content"></div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 타임라인 스크롤 게이지 스크립트 -->
+<script>
+(function(){
+  var wrap = document.querySelector('.tl-wrap');
+  var fill = document.getElementById('tl-fill');
+  var dots = document.querySelectorAll('[data-tl-dot]');
+  var colors = document.querySelectorAll('[data-tl-color]');
+  if(!wrap || !fill) return;
+
+  function onScroll(){
+    var rect = wrap.getBoundingClientRect();
+    var trigger = window.innerHeight * 0.6;
+    var h = Math.max(0, Math.min(trigger - rect.top, rect.height));
+    fill.style.height = h + 'px';
+
+    var items = wrap.querySelectorAll('.tl-item');
+    items.forEach(function(item, i){
+      var r = item.getBoundingClientRect();
+      var center = r.top + 6;
+      if(center < trigger){
+        if(dots[i]) dots[i].classList.add('tl-active');
+        item.querySelectorAll('[data-tl-color]').forEach(function(el){ el.classList.add('tl-active'); });
+      } else {
+        if(dots[i]) dots[i].classList.remove('tl-active');
+        item.querySelectorAll('[data-tl-color]').forEach(function(el){ el.classList.remove('tl-active'); });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  setTimeout(onScroll, 200);
+})();
+</script>
+
+<!-- ===== 포트폴리오 ===== -->
+<section class="section" id="s-portfolio">
+  <div class="container">
+    <div class="eyebrow anim anim-d1">Portfolio</div>
+    <h2 class="section-title anim anim-d2">홈페이지 포트폴리오</h2>
+    <p class="section-sub anim anim-d3">카드를 클릭하면 실제 사이트로 이동합니다.</p>
+    <div class="pf-grid" id="portfolio-grid">
+      <article class="pf-card" onclick="window.open('https://lebonfnb.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/29aba3c7f401b.png" alt="르본" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446887/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">르본</div><div class="pf-plan">회사홈페이지 / 쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://kumbokfood.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/6e356ba78836c.png" alt="금복식품" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">금복식품</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">B2B수출</span></div></div></article><article class="pf-card" onclick="window.open('https://rich-dc.co.kr','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/f59934f9f5ac6.png" alt="리치디바인 컨설팅" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">리치디바인 컨설팅</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">컨설팅</span></div></div></article><article class="pf-card" onclick="window.open('https://dawnwall.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/300e804d06793.png" alt="던월" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446843/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">패션/주얼리</div><div class="pf-title">던월</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://www.e-hcg.com/kor/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/a31af78326e77.png" alt="휴먼 컨설팅" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">휴먼 컨설팅</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">컨설팅</span></div></div></article><article class="pf-card" onclick="window.open('https://windycenter.cafe24.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/15b406d701cf3.png" alt="주식회사윈디" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">주식회사윈디</div><div class="pf-plan">회사홈페이지 / 쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://deljoie.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/5cae51b2c4f07.png" alt="델쥬아" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">델쥬아</div><div class="pf-plan">회사홈페이지</div></div></article><article class="pf-card" onclick="window.open('https://chaering.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/715bbdc920190.png" alt="채링" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118512789/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">패션/주얼리</div><div class="pf-title">채링</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('http://glimpiece.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/7eaf123e27893.png" alt="글림피스" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446823/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">글림피스</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('http://jangwoofnb.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/506df58cafd88.png" alt="장우가든" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446991/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">장우가든</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://www.precisehotels.com/en','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/9422b238e1148.png" alt="precisehotels" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">숙박</div><div class="pf-title">precisehotels</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">예약</span></div></div></article><article class="pf-card" onclick="window.open('https://starville.ninebridges.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/c7c68ae2a9e89.png" alt="스타빌" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">숙박</div><div class="pf-title">스타빌</div><div class="pf-plan">기타협의</div><div class="pf-tags"><span class="pf-tag">예약</span></div></div></article><article class="pf-card" onclick="window.open('https://soowolok.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/76cccd77d5046.png" alt="수오록" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">숙박</div><div class="pf-title">수오록</div><div class="pf-plan">기타협의</div><div class="pf-tags"><span class="pf-tag">예약</span></div></div></article><article class="pf-card" onclick="window.open('https://piefactory.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/d5e97731b481b.png" alt="파이팩토리" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118447008/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">스튜디오</div><div class="pf-title">파이팩토리</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://jungrisin.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/4409fec338b80.png" alt="정리의신" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446998/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">정리의신</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('http://woomong.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/be53bcf9b641c.png" alt="우몽" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446962/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">우몽</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">고객 DB수집</span></div></div></article><article class="pf-card" onclick="window.open('https://pacf.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/01c88b1be9690.png" alt="글로벌평화예술재단" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446817/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">글로벌평화예술재단</div><div class="pf-plan">회사홈페이지</div></div></article><article class="pf-card" onclick="window.open('http://runsign.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/aba6da49da320.png" alt="달려라간판" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446827/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">달려라간판</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://cashflow-korea.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/1d18132c51e28.png" alt="국제캐쉬플로우강사협회" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118518129/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">국제캐쉬플로우강사협회</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('http://uclasslab.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/3bc6d5e303545.png" alt="유클래스랩" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446973/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">유클래스랩</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://pizzamozza.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/a177217d01be0.png" alt="피자모쨤" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118447014/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">피자모쨤</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">고객 DB수집</span></div></div></article><article class="pf-card" onclick="window.open('https://thegreendots.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/f17f41883a19c.png" alt="더그린닷츠" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446833/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">F&B</div><div class="pf-title">더그린닷츠</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://nofaillab.com','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/9be1722e8dff5.png" alt="노페일랩" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118518154/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">일반</div><div class="pf-title">노페일랩</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://keiem.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/b6956f2c1d984.png" alt="케이엠에스테틱" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">뷰티</div><div class="pf-title">케이엠에스테틱</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">고객 DB수집</span></div></div></article><article class="pf-card" onclick="window.open('https://www.unitechcorp.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/6d3803eccd4eb.png" alt="유니테크" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">IT/기술</div><div class="pf-title">유니테크</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">테크</span></div></div></article><article class="pf-card" onclick="window.open('https://awesomewellspalounge.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/68be55cb991ad.png" alt="어썸웰스파라운지" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">뷰티</div><div class="pf-title">어썸웰스파라운지</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">고객 DB수집</span></div></div></article><article class="pf-card" onclick="window.open('http://gyerimdang.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/249e8af9d5945.png" alt="계림당" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446811/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">뷰티</div><div class="pf-title">계림당</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('http://masscliff.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/582400adaaa70.png" alt="매스클리프" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446920/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">뷰티</div><div class="pf-title">매스클리프</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('http://www.crfclinic.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/92fa871c1c92e.png" alt="셀리데이의원" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446936/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">병원</div><div class="pf-title">셀리데이의원</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">피부</span></div></div></article><article class="pf-card" onclick="window.open('http://www.aiveclinic.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/6de823a6774cc.png" alt="에이브의원" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446954/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">병원</div><div class="pf-title">에이브의원</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">피부과</span></div></div></article><article class="pf-card" onclick="window.open('https://marblepsglobal.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/2dba02a729ab1.png" alt="마블성형외과" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446912/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">병원</div><div class="pf-title">마블성형외과</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">성형외</span></div></div></article><article class="pf-card" onclick="window.open('http://www.btq.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/dc4f19d495b7f.png" alt="비티큐의원" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446929/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">병원</div><div class="pf-title">비티큐의원</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">피부과</span></div></div></article><article class="pf-card" onclick="window.open('https://dskdnc.co.kr','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/b8a730ec6a2b5.png" alt="디자인석경디앙씨" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1127025890/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">디자인석경디앙씨</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://www.thinkaboutchu.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/1f7719c52faf1.png" alt="띠어바웧추" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446856/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">띠어바웧추</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://ontail.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/c69b66c11053f.png" alt="온테일" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446958/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">온테일</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://infinite-materials.net/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/7a06b8b4009b6.png" alt="인피니트스페이스" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446986/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">인피니트스페이스</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://zero-to-n.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/e315b9e4d729d.png" alt="제로투엔건축사사무소" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118447001/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">제로투엔건축사사무소</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://seoristudio.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/8f12f2f237a15.png" alt="서리스튜디오" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446934/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">서리스튜디오</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://yeoninteriorstd.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/8e52908729f25.png" alt="연스튜디오" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118547036/rendition/240p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">연스튜디오</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://u4ria.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/cd40b79bf97bf.png" alt="유포리아" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446983/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">IT/기술</div><div class="pf-title">유포리아</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://aestheon.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/178494644f812.png" alt="에스테온" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">에스테틱</div><div class="pf-title">에스테온</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">프리미엄 브랜드</span><span class="pf-tag">가맹문의 구조</span></div></div></article><article class="pf-card" onclick="window.open('https://felicecompany.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/fa578d6ea9421.png" alt="펠리체컴퍼니" loading="lazy"/></div><div class="pf-info"><div class="pf-meta">건축/인테리어</div><div class="pf-title">펠리체컴퍼니</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">고객 DB수집</span><span class="pf-tag">포트폴리오</span></div></div></article><article class="pf-card" onclick="window.open('https://apomederm.com/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/928aa79fcac41.png" alt="아포메덤" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446950/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">뷰티</div><div class="pf-title">아포메덤</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('http://gajirunee.co.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/e3500d4eae829.png" alt="가지런이 교정 치과" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446803/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">병원</div><div class="pf-title">가지런이 교정 치과</div><div class="pf-plan">회사홈페이지</div><div class="pf-tags"><span class="pf-tag">고객 DB수집</span></div></div></article><article class="pf-card" onclick="window.open('https://koratech.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/866ee0c95a1f1.png" alt="코라테크" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118447004/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">IT/기술</div><div class="pf-title">코라테크</div><div class="pf-plan">회사홈페이지</div></div></article><article class="pf-card" onclick="window.open('https://unicosmetic.kr/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/e5ecf93f174d6.png" alt="유니코스메틱" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446968/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">뷰티</div><div class="pf-title">유니코스메틱</div><div class="pf-plan">쇼핑몰</div><div class="pf-tags"><span class="pf-tag">쇼핑 기능</span><span class="pf-tag">결제 기능</span></div></div></article><article class="pf-card" onclick="window.open('https://ktisystem.imweb.me/','_blank')"><div class="pf-thumb"><img src="https://cdn.imweb.me/upload/S202412032ebb4a5517a3b/cdd132c580cb1.png" alt="KTI 시스템" loading="lazy"/><video muted playsinline loop preload="metadata" src="https://player.vimeo.com/progressive_redirect/playback/1118446786/rendition/360p/file.mp4"></video></div><div class="pf-info"><div class="pf-meta">IT/기술</div><div class="pf-title">KTI 시스템</div><div class="pf-plan">회사홈페이지</div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- 애니메이션 스크립트 -->
+<script>
+(function(){
+  var els=document.querySelectorAll('.anim');if(!els.length)return;
+  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){en.target.classList.add('visible');o.unobserve(en.target);}})},{threshold:.05,rootMargin:'0px 0px 50px 0px'});els.forEach(function(el){o.observe(el)})}else{els.forEach(function(el){el.classList.add('visible')})}
+  var charts=document.querySelectorAll('.chart-progress');
+  if(charts.length&&'IntersectionObserver' in window){var co=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting){var el=en.target;el.style.strokeDashoffset=el.getAttribute('data-target')||'300';co.unobserve(el);}})},{threshold:.3});charts.forEach(function(c){co.observe(c)})}
+
+  // 포트폴리오 비디오 hover 재생
+  document.querySelectorAll('.pf-thumb').forEach(function(th){
+    var v=th.querySelector('video');
+    if(!v) return;
+    th.addEventListener('mouseenter',function(){v.play().catch(function(){});});
+    th.addEventListener('mouseleave',function(){v.pause();v.currentTime=0;});
+  });
+})();
+</script>
+</body>
+</html>
